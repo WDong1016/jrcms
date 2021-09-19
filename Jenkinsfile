@@ -70,16 +70,13 @@ def smokeTest(environment) {
 
 def deployToEB(environment) {
     checkout scm
-            environment {
-               AWS_REGION='ap-southeast-2' 
-            }
     withCredentials([usernamePassword(credentialsId: 'aws-eb-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
             container('eb') {
-                withEnv(["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}", "AWS_REGION=${AWS_REGION}"]) {
+                withEnv(["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" ]) {
                     dir("deployment") {
                     sh "sh generate-dockerrun.sh ${currentBuild.number}"
-                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number}"
-                    //sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number} --region ap-southeast-2"
+                    //sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number}"
+                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number} --region ap-southeast-2"
                     }
                 }
             }
