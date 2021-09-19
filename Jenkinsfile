@@ -19,7 +19,7 @@ podTemplate(
       
     def image
     withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASSWD')]) {
-        image = "${USER}/jrcms:${currentBuild.number}"
+        image = "${USER}/jrcms-private:${currentBuild.number}"
     }
     
     stage('Build and Test') {
@@ -75,7 +75,7 @@ def deployToEB(environment) {
                 withEnv(["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}", "AWS_REGION=us-east-1"]) {
                     dir("deployment") {
                     sh "sh generate-dockerrun.sh ${currentBuild.number}"
-                    sh "eb deploy jrcms-${environment} -l ${currentBuild.number}"
+                    sh "eb deploy jrcmstardigrade-${environment} -l ${currentBuild.number}"
                     }
                 }
             }
