@@ -4,8 +4,8 @@
 * 2. Credentials: 
 *    - docker-hub
 *    - aws-eb-key
-* 3. AWS Elastic Benstalk in us-east-1 region
-*    - Application: jrcms
+* 3. AWS Elastic Benstalk in ap-southeast-2 region
+*    - Application: jrcms-tardigrade
 *    - Environment: jrcms-test, jrcms-staging and jrcms-production
 **/
 
@@ -72,11 +72,11 @@ def deployToEB(environment) {
     checkout scm
     withCredentials([usernamePassword(credentialsId: 'aws-eb-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
             container('eb') {
-                withEnv(["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}", "AWS_REGION=ap-southeast-2"]) {
+                withEnv(["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}", 'AWS_REGION=ap-southeast-2']) {
                     dir("deployment") {
                     sh "sh generate-dockerrun.sh ${currentBuild.number}"
-//                    sh "eb use Jrcmstardigrade-${environment} --region ap-southeast-2"
-                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number} --region ap-southeast-2"
+                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number}"
+                    //sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number} --region ap-southeast-2"
                     }
                 }
             }
