@@ -56,7 +56,7 @@ podTemplate(
         }
         
         stage("Deploy to production environment") {
-            deployToEB('production')
+            deployToEB('prod')
         }
     }
   }
