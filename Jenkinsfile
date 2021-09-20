@@ -19,7 +19,7 @@ podTemplate(
       
     def image
     withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASSWD')]) {
-        image = "${USER}/jrcms-public:${currentBuild.number}"
+        image = "${USER}/jrcms-private:${currentBuild.number}"
     }
     
     stage('Build and Test') {
@@ -73,14 +73,14 @@ def deployToEB(environment) {
     withCredentials([usernamePassword(credentialsId: 'aws-eb-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
             container('eb') {
                 withEnv(["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"]) {
-            withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASSWD')]) {
-            container('docker') {
                     dir("deployment") {
                     sh "sh generate-dockerrun.sh ${currentBuild.number}"
-                sh "docker login --username ${USER} --password ${PASSWD}"
-                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number}"
+            withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASSWD')]) {
+            	container('docker') {
+               		 sh "docker login --username ${USER} --password ${PASSWD}"
                     }
             }
+                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number}"
             }
                 }
             }

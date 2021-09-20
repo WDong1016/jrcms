@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "tardigraded/jrcms-public:TAG",
+    "Name": "tardigraded/jrcms-private:TAG",
     "Update": "true"
   },
   "Ports": [
