@@ -1,7 +1,7 @@
 version: '3'
 services:
     jrcms:
-        image: tardigraded/jrcms-private:latest
+        image: tardigraded/jrcms-public:latest
         restart: always
         build: ./
         ports:
