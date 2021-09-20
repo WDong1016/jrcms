@@ -76,7 +76,7 @@ def deployToEB(environment) {
                     dir("deployment") {
                     sh "sh generate-dockerrun.sh ${currentBuild.number}"
                     //sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number}"
-                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number} --region ap-southeast-2 --debug"
+                    sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number} --region ap-southeast-2"
                     }
                 }
             }
