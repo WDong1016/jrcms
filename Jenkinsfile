@@ -75,11 +75,12 @@ def deployToEB(environment) {
                 withEnv(["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"]) {
                     dir("deployment") {
                     sh "sh generate-dockerrun.sh ${currentBuild.number}"
-            withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASSWD')]) {
+/*            withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USER', passwordVariable: 'PASSWD')]) {
             	container('docker') {
                		 sh "docker login --username ${USER} --password ${PASSWD}"
                     }
             }
+*/
                     sh "eb deploy Jrcmstardigrade-${environment} -l ${currentBuild.number}"
             }
                 }
